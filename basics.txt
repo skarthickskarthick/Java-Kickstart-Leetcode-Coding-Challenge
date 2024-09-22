@@ -1,0 +1,240 @@
+1)odd or even -1025. Divisor Game (normal implementation)
+2)power of a number-50. Pow(x, n)
+
+class Solution {
+    public double myPow(double x, int n) {
+        double prod=1;
+     
+
+        if(n<0){
+             if (n == Integer.MIN_VALUE) {
+                n++; // Increment by one to avoid overflow
+                prod *= x; // Multiply prod by x since we've effectively removed one power of x
+            }
+        n*=-1;
+         x=1/x;
+    }
+
+        while(n>0)
+        {
+            if(n%2==1)
+            {
+                prod*=x;
+            }
+            x*=x;
+            n/=2;
+        }
+       
+       return prod;
+    }
+}
+3)GCD-1979. Find Greatest Common Divisor of Array
+
+soln 1: Eucleadian algorithm
+
+class Solution {
+    public int findGCD(int[] nums) {
+        Arrays.sort(nums);
+        int a=nums[0];
+        int b=nums[nums.length-1];
+        int rem=1;
+        
+        while(rem!=0)
+        {
+            rem=a%b;
+            a=b;
+            b=rem;
+        }
+        return a;
+    }
+}
+
+soln 2: normal method
+
+class Solution {
+    public int findGCD(int[] nums) {
+        Arrays.sort(nums);
+        int n1=nums[0];
+        int n2=nums[nums.length-1];
+        while(n1!=n2)
+        {
+            if(n1>n2)
+            n1-=n2;
+            else
+            n2-=n1;
+        }
+        return n2;
+    }
+}
+4)last digit-normal implementation
+5)count digits- 2520. count the digits that divide a number
+
+
+class Solution {
+    public int countDigits(int num) {
+        int n=num,count=0;
+        while(num>0)
+        {
+          if(n%(num%10)==0)
+          count++;
+          num=num/10;
+        }
+        return count;
+    }
+}
+
+6)reverse digits- 7.reverse integer
+
+class Solution {
+    public int reverse(int x) {
+        int r,f=0;
+        long s=0;
+       
+        if(x<0){
+        x=x*-1;
+        f=1;
+        }
+        while(x>0){
+      r=x%10;
+      s=s*10+r;
+      x=x/10;
+        }
+        if(f==1)
+        s=s*-1;
+         if(!(s>=-2147483648 && s<=2147483647))
+        return 0;
+        return (int) s;
+    }
+}
+
+7)perfect number-507
+
+class Solution {
+    public boolean checkPerfectNumber(int num) {
+        if(num==1)
+        return false;
+        int count=1;
+        for(int i=2;i<num;i++)
+        {
+            if(num%i==0)
+            count+=i;
+        }
+        if(count==num)
+        return true;
+        return false;
+    }
+}
+
+8)prime number
+
+soln 1-prime or not square method
+
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Try programiz.pro");
+        int i=2,count=0,num= 4999790 ;
+        while(i*i<=num)
+        {
+            if(num%i==0){
+            count++;
+            System.out.println("not");
+            break;}
+            i++;
+            
+        }
+        if(count==0)
+        System.out.println("prime");
+       
+    }
+}
+
+soln 2-counting primes-204-sieve algorithm(putting multiples to false)
+
+class Solution {
+    public int countPrimes(int n) {
+        if(n<=2)
+        return 0;
+     boolean prime[]=new boolean[n];
+     int count=0;
+     for(int i=2;i<n;i++)
+     prime[i]=true;
+
+     for(int i=2;i*i<n;i++)
+     {
+        if(prime[i])
+        {
+            for(int j=i*i;j<n;j+=i){
+            prime[j]=false;
+        }
+        }
+     }
+
+     for(int i=2;i<n;i++)
+     {
+      if(prime[i])
+      count++;
+     }
+     return count;
+
+    }
+}
+
+9)square root of a number
+
+soln 1-69(binary search method)
+
+
+class Solution {
+    public int mySqrt(int x) {
+        if(x==0)
+        return 0;
+          if(x==1)
+        return 1;
+
+    long start=1,stop=x/2,ans=0;//search b/w 1 to x/2 only its enough
+    while(start<=stop)
+    {
+        long mid=start+((stop-start)/2);
+        if(mid*mid==x)   // perfect squares
+        return (int)mid;
+        if(mid*mid<x)
+        {
+            ans=mid;
+            start=mid+1;
+        }
+        else
+        stop=mid-1;
+    }
+    return (int)ans;
+
+
+
+    }
+}
+
+soln 2- 367-perfect squares
+
+
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        int x=num;
+          if(x==1)
+        return true;
+
+    long start=1,stop=x/2;
+    while(start<=stop)
+    {
+        long mid=start+((stop-start)/2);
+        if(mid*mid==x)
+        return true;
+        if(mid*mid<x)
+        {
+         
+            start=mid+1;
+        }
+        else
+        stop=mid-1;
+    }
+    return false;
+    }
+}
