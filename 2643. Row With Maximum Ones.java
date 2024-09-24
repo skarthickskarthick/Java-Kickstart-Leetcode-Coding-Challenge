@@ -1,15 +1,29 @@
 class Solution {
-    public void rotate(int[][] matrix) {
-         for(int i=0;i<matrix.length;i++)
+    public int[] rowAndMaximumOnes(int[][] mat) {
+        int min=0,max=0;
+        for(int i=0;i<mat.length;i++)
         {
-            for(int j=i+1;j<matrix[0].length;j++)
+            int count=0;
+            for(int j=0;j<mat[0].length;j++)
             {
-                int temp=matrix[i][j];
-                matrix[i][j]=matrix[j][i];
-                matrix[j][i]=temp;
-               
+                if(mat[i][j]==1)
+                count++;
+                
             }
-        }         //[[1,2,3],[4,5,6],[7,8,9]]-matrix
-                  // transpose- [[1,4,7],[2,5,8],[3,6,9]]
+            
+            if(max<count)
+            {
+                max=count;
+                min=i;
+            }
+            
+            
+        }
+
+        
+        int ans[]=new int[2];
+        ans[0]=min;
+        ans[1]=max;
+        return ans;
     }
 }
