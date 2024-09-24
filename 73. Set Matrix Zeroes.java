@@ -1,15 +1,31 @@
 class Solution {
-    public void rotate(int[][] matrix) {
+    public void setZeroes(int[][] matrix) {
+        boolean row[]=new boolean[matrix.length];
+        boolean col[]=new boolean[matrix[0].length];
+        
          for(int i=0;i<matrix.length;i++)
         {
-            for(int j=i+1;j<matrix[0].length;j++)
+            for(int j=0;j<matrix[0].length;j++)
             {
-                int temp=matrix[i][j];
-                matrix[i][j]=matrix[j][i];
-                matrix[j][i]=temp;
-               
+                if(matrix[i][j]==0)
+                {
+                    row[i]=true;
+                    col[j]=true;
+                }
             }
-        }         //[[1,2,3],[4,5,6],[7,8,9]]-matrix
-                  // transpose- [[1,4,7],[2,5,8],[3,6,9]]
+        }
+        for(int i=0;i<row.length;i++)
+        {
+            if(row[i]){
+            for(int j=0;j<matrix[0].length;j++)
+            matrix[i][j]=0;}
+        }
+        for(int i=0;i<col.length;i++)
+        {
+            if(col[i]){
+            for(int j=0;j<matrix.length;j++)
+            matrix[j][i]=0;}
+        }
+
     }
 }
