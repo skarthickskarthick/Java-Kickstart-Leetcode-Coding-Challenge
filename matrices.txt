@@ -1,0 +1,287 @@
+1)linear search
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        for(int i=0;i<matrix.length;i++)
+        {
+            for(int j=0;j<matrix[0].length;j++)
+            {
+                if(matrix[i][j]==target)
+                return true;
+            }
+        }
+        return false; 
+    }
+}
+
+2)binary search
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int m=matrix.length;
+        int n=matrix[0].length;
+        int start=0,stop=n*m-1;
+        while(start<=stop)
+        {
+            int mid=start+(stop-start)/2;
+            int i=mid/n;
+            int j=mid%n;
+            if(matrix[i][j]==target)
+            return true;
+            else if(matrix[i][j]<target)
+            start=mid+1;
+            else
+            stop=mid-1;
+        }
+        return false; 
+    }
+}
+
+3)transpose of a matrix-inplace
+
+class Solution {
+    public void rotate(int[][] matrix) {
+         for(int i=0;i<matrix.length;i++)
+        {
+            for(int j=i+1;j<matrix[0].length;j++)
+            {
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[j][i];
+                matrix[j][i]=temp;
+               
+            }
+        }         //[[1,2,3],[4,5,6],[7,8,9]]-matrix
+                  // transpose- [[1,4,7],[2,5,8],[3,6,9]]
+    }
+}
+
+
+4)reverse a matrix
+
+soln 1: along rows
+
+ int start=0,stop=matrix.length-1;
+                while(start<stop){
+                int temp[]=matrix[start];
+                matrix[start]=matrix[stop];
+                matrix[stop]=temp;
+                start++;
+                stop--;
+                }
+
+
+soln 2: along columns
+
+ int start=0,stop=matrix[0].length-1;
+                while(start<stop){
+                    for(int i=0;i<matrix.length;i++)
+                    {
+                int temp=matrix[i][start];
+                matrix[i][start]=matrix[i][stop];
+                matrix[i][stop]=temp;
+                    }
+                start++;
+                stop--;
+                }
+
+
+
+5) rotate matrix-
+
+soln 1: 48. Rotate Image-90 degrees
+
+class Solution {
+    public void rotate(int[][] matrix) {
+         for(int i=0;i<matrix.length;i++)
+        {
+            for(int j=i+1;j<matrix[0].length;j++)
+            {
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[j][i];
+                matrix[j][i]=temp;
+               
+            }
+        }                      //Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+                               //Output: [[7,4,1],[8,5,2],[9,6,3]]
+
+      
+                int start=0,stop=matrix[0].length-1;
+                while(start<stop){
+                    for(int i=0;i<matrix.length;i++)
+                    {
+                int temp=matrix[i][start];
+                matrix[i][start]=matrix[i][stop];
+                matrix[i][stop]=temp;
+                    }
+                start++;
+                stop--;
+                }
+    }
+}
+
+
+soln 2: 2946. Matrix Similarity After Cyclic Shifts
+
+class Solution {
+    public boolean areSimilar(int[][] mat, int k) {
+
+        k=k%(mat.length*mat[0].length);
+        
+        int matrix1[][]=new int[mat.length][mat[0].length];
+        for(int i=0;i<mat.length;i++)
+        {
+            int nums[]=new int[mat[i].length];
+            for(int j=0;j<mat[i].length;j++)
+            nums[j]=mat[i][j];
+           int n=nums.length;
+            k=k%n;
+          
+             if(i%2==0){
+             nums=reverse(nums,0,k-1); // left rotate array
+             nums=reverse(nums,k,n-1);
+             nums=reverse(nums,0,n-1);
+             matrix1[i]=nums;
+             }
+             else
+             {
+                nums=reverse(nums,0,n-k-1);  //right rotate array
+             nums=reverse(nums,n-k,n-1);
+             nums=reverse(nums,0,n-1);
+                matrix1[i]=nums; 
+             }
+        }
+         for (int i = 0; i < matrix1.length; i++) {
+            for (int j = 0; j < matrix1[0].length; j++) {
+             
+                if (matrix1[i][j] != mat[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+     }
+    static int[] reverse(int[] nums,int start,int stop)
+    {
+        while(start<=stop){
+            int temp=nums[start];
+            nums[start]=nums[stop];
+            nums[stop]=temp;
+            start++;
+            stop--;
+        }
+        return nums;
+    }
+}
+
+6) maximum number of one's in a row - 2643. Row With Maximum Ones	
+
+
+class Solution {
+    public int[] rowAndMaximumOnes(int[][] mat) {
+        int min=0,max=0;
+        for(int i=0;i<mat.length;i++)
+        {
+            int count=0;
+            for(int j=0;j<mat[0].length;j++)
+            {
+                if(mat[i][j]==1)
+                count++;
+                
+            }
+            
+            if(max<count)
+            {
+                max=count;
+                min=i;
+            }
+            
+            
+        }
+
+        
+        int ans[]=new int[2];
+        ans[0]=min;
+        ans[1]=max;
+        return ans;
+    }
+}
+
+7) diagonal traverse - 498. Diagonal Traverse
+
+class Solution {
+    public int[] findDiagonalOrder(int[][] mat) {
+        int i=0,j=0,in=0;
+        boolean up=true;
+        int ans[]=new int[mat.length*mat[0].length];
+        while(i<mat.length&&j<mat[0].length)
+        {
+            if(up)
+            {
+               while(i>0&&j<mat[0].length-1)//traversing across the diagonal elements
+               {
+                ans[in++]=mat[i][j];
+                i--;
+                j++;
+               }
+               ans[in++]=mat[i][j];   //to overcome index out of bounds
+               if(j==mat[0].length-1)//direction change or turn
+               i++;
+               else
+               j++;
+               
+            }
+            else
+            {
+
+                while(j>0&&i<mat.length-1)//traversing across the diagonal elements
+               {
+                ans[in++]=mat[i][j];
+                j--;
+                i++;
+               }
+               ans[in++]=mat[i][j];
+               if(i==mat.length-1)//direction change or turn
+               j++;
+               else
+               i++;
+              
+            }
+              up=!up;
+        }
+        return ans;
+    }
+}
+
+8)73. Set Matrix Zeroes
+
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        boolean row[]=new boolean[matrix.length];
+        boolean col[]=new boolean[matrix[0].length];
+        
+         for(int i=0;i<matrix.length;i++)
+        {
+            for(int j=0;j<matrix[0].length;j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    row[i]=true;
+                    col[j]=true;
+                }
+            }
+        }
+        for(int i=0;i<row.length;i++)
+        {
+            if(row[i]){
+            for(int j=0;j<matrix[0].length;j++)
+            matrix[i][j]=0;}
+        }
+        for(int i=0;i<col.length;i++)
+        {
+            if(col[i]){
+            for(int j=0;j<matrix.length;j++)
+            matrix[j][i]=0;}
+        }
+
+    }
+}

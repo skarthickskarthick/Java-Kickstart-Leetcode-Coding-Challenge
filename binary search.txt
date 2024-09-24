@@ -1,0 +1,743 @@
+Sorted Array
+
+1)find the element that is smaller than target
+
+soln 1: 35. Search Insert Position
+
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        if(target>nums[nums.length-1])
+        return nums.length;
+        if(target<nums[0])
+        return 0;
+        int start=0,stop=nums.length-1;
+        while(start<=stop)
+        {
+           int mid=start+(stop-start)/2;
+           if(nums[mid]<target)
+           {
+            start=mid+1;
+           }
+           else if(nums[mid]>target)
+           stop=mid-1;
+           else
+           return mid;
+        }
+        return start;
+    }
+}
+
+soln 2: 744. Find Smallest Letter Greater Than Target
+
+
+class Solution {
+    public char nextGreatestLetter(char[] letters, char target) {
+        int st=0;
+        int sp=letters.length-1;
+        char res=' ';
+        while(st<=sp)
+        {
+            int mid=(st+sp)/2;
+            if(letters[mid]>target){
+            res=letters[mid];
+            sp=mid-1;
+            }
+            else
+            st=mid+1;
+        }
+        if(res==' ')
+        res=letters[0];
+        return res;
+    }
+}
+
+2)34. Find First and Last Position of Element in Sorted Array
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] ans={-1,-1};
+        int st=search(nums,target,true);
+        int sp=search(nums,target,false);
+        ans[0]=st;
+        ans[1]=sp;
+        return ans;
+
+    }
+    int search(int[] nums,int target,boolean findstartindex)
+    {
+        int ans=-1;
+        int st=0;
+        int sp=nums.length-1;
+        while(st<=sp)
+        {
+            int mid=st+(sp-st)/2;
+            if(target<nums[mid])
+            sp=mid-1;
+            else if(target>nums[mid])
+            st=mid+1;
+            else
+            {
+                ans=mid;
+                if(findstartindex)
+                sp=mid-1;
+                else
+                st=mid+1;
+            }
+        }
+        return ans;
+    }
+}
+
+3)268. Missing Number
+
+class Solution {
+    public int missingNumber(int[] nums) {
+      int i=0;
+ while(i<nums.length)
+ {
+     int index=nums[i];
+     if(nums[i]<nums.length&&nums[i]!=nums[index])
+     swap(i,index,nums);
+     else 
+     i++;
+ }
+ for(int j=0;j<nums.length;j++)
+ {
+     if(nums[j]!=j)
+     return j;
+     
+
+ }
+ return nums.length;
+}
+public void swap(int a,int b,int[] nums)
+{
+
+int temp=nums[a];
+nums[a]=nums[b];
+nums[b]=temp;
+       }
+       
+}
+
+4)Search in an infinite sorted array
+
+import java.util.*;
+public class solution {
+  public static int binarySearch(int[] arr, int low, int high, int key) {
+    while (low <= high) {
+
+      int mid = (low + high) / 2;
+      if (arr[mid] < key) {
+        low = mid + 1;
+      } else if (arr[mid] > key) {
+        high = mid - 1;
+      } else {
+        return mid;
+      }
+
+    }
+    return -1;
+  }
+  public static int findIndex(int[] arr, int key) {
+    int low = 0;
+    int high = 1;
+    while (arr[high] < key) {
+      low = high;
+      high = 2 * high;
+    }
+    return binarySearch(arr, low, high, key);
+  }
+  public static void main(String args[]) {
+    // Your code goes here
+    int[] arr = {3,5,7,9,10,90,100,130,140,160,170};
+
+    int ans = findIndex(arr, 130);
+
+    System.out.println("Element found at index " + ans);
+  }
+}
+
+
+
+Mountain Array
+
+
+1)852. Peak Index in a Mountain Array
+
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        int st=0;
+        int sp=arr.length - 1;
+        while(st<=sp)
+        {
+          int  mid=st+(sp-st)/2;
+            if(arr[mid]>arr[mid+1])
+             sp=mid-1;
+             else
+                 st=mid+1;
+                  
+         }
+        
+        return st;
+    }
+}
+
+2)162. Find Peak Element
+
+class Solution {
+    public int findPeakElement(int[] nums) {
+         int st=0;
+        int sp=nums.length - 1;
+        while(st<sp)
+        {
+          int  mid=st+(sp-st)/2;
+            if(nums[mid]>nums[mid+1])
+             sp=mid;
+             else
+                 st=mid+1;
+                  
+         }
+        
+        return st;
+    }
+}
+
+3)1095. Find in Mountain Array
+
+/**
+ * // This is MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface MountainArray {
+ *     public int get(int index) {}
+ *     public int length() {}
+ * }
+ */
+ 
+class Solution {
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        int ans=0,peak=peakIndexInMountainArray(mountainArr);
+      ans= search(target,mountainArr,0,peak,false);
+      if(ans!=-1)
+      {
+       return ans;
+      }
+      return  search(target,mountainArr,peak+1,mountainArr.length()-1,true);
+    }
+    static int search(int target, MountainArray mountainArr,int st,int sp,boolean reverse)
+    {
+      
+        while(st<=sp)
+        {
+          int  mid=st+(sp-st)/2;
+          if(mountainArr.get(mid)<target&&!reverse ||mountainArr.get(mid)>target&&reverse)
+         st=mid+1;
+       else if(mountainArr.get(mid)>target&&!reverse || mountainArr.get(mid)<target &&reverse)
+             sp=mid-1;
+             else
+           return mid;
+                  
+         }
+         
+        return -1;
+    }
+    
+    public int peakIndexInMountainArray( MountainArray mountainArr) {
+        int st=0;
+        int sp=mountainArr.length() - 1;
+        while(st<=sp)
+        {
+          int  mid=st+(sp-st)/2;
+            if(mountainArr.get(mid)>mountainArr.get(mid+1))
+             sp=mid-1;
+             else
+                 st=mid+1;
+                  
+         }
+        
+        return st;
+    }
+
+}
+
+
+Rotated Array
+
+1)33. Search in Rotated Sorted Array
+
+soln 1: distinct elements only
+
+class Solution {
+    public int search(int[] nums, int target) {
+         int start=0,stop=nums.length-1;
+         while(start<=stop)
+         {
+            int mid=start+(stop-start)/2;
+            if(nums[mid]==target)
+            return mid;
+            else if(nums[start]<=nums[mid])
+            {
+                if(nums[start]<=target&&target<=nums[mid])
+                stop=mid-1;
+                else
+                start=mid+1;
+            }
+            else
+            {
+                if(nums[mid]<target&&target<=nums[stop])
+                start=mid+1;
+                else
+                stop=mid-1;
+            }
+         }
+         return -1;
+    }
+}
+
+
+soln 2: 81. Search in Rotated Sorted Array II-repeated elements
+
+class Solution {
+    public boolean search(int[] nums, int target) {
+  
+         int start=0,stop=nums.length-1;
+         while(start<=stop)
+         {
+            int mid=start+(stop-start)/2;
+            if(nums[mid]==target)
+            return true;
+            if (nums[start] == nums[mid]) {   // this is the only change
+                start++;
+                continue;
+            }
+            else if(nums[start]<=nums[mid])
+            {
+                if(nums[start]<=target&&target<=nums[mid])
+                stop=mid-1;
+                else
+                start=mid+1;
+            }
+            else
+            {
+                if(nums[mid]<target&&target<=nums[stop])
+                start=mid+1;
+                else
+                stop=mid-1;
+            }
+         }
+         return false;
+   
+
+    }
+}
+
+2)153. Find Minimum in Rotated Sorted Array
+
+
+class Solution {
+    public int findMin(int[] nums) {
+     int min=nums[0];
+     for(int i=0;i<nums.length;i++)
+     {
+       if(min>nums[i])
+       min=nums[i];
+     }
+     return min;
+    }
+}
+
+3)1752. Check if Array Is Sorted and Rotated
+
+class Solution {
+    public boolean check(int[] nums) {
+       int f=0;
+      
+     for(int i=0;i<nums.length;i++)
+     {
+       if(nums[i]>nums[(i+1)%nums.length])
+       f++;
+       if(f>1)
+       return false;
+      
+     }
+     return true;
+   
+
+          
+    }
+}
+
+Matrix Array
+
+1)240. Search a 2D Matrix II
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+       
+        int m=matrix.length;
+        int n=matrix[0].length;
+         int start=0,stop=n-1;
+        while(start<m &&stop>=0)
+        {
+            if(matrix[start][stop]==target)
+            return true;
+            if(matrix[start][stop]<target)
+            start++;
+            else
+            stop--;
+        }
+        return false;
+    }
+}
+
+
+2)1901. Find a Peak Element II
+
+
+class Solution {
+    public int[] findPeakGrid(int[][] mat) {
+      int m=mat.length;
+      int n=mat[0].length;
+      int start=0,stop=n-1;
+      int arr[]={-1,-1};
+      while(start<=stop)
+      {
+        int mid=start+(stop-start)/2; //mid refers to column
+        int maxrowindex=findindex(mat,m,mid);
+        int left=mid-1>=0?mat[maxrowindex][mid-1]:-1;
+        int right=mid+1<n?mat[maxrowindex][mid+1]:-1;
+        if(mat[maxrowindex][mid]>left&&mat[maxrowindex][mid]>right)
+        {
+            arr[0]=maxrowindex;
+            arr[1]=mid;
+            return arr;
+        }
+        else if(mat[maxrowindex][mid]<left)
+        stop=mid-1;
+        else
+        start=mid+1;
+      }
+      return arr;
+    }
+    static int findindex(int[][] mat,int m,int col)
+    {
+        int max=-1,index=-1;
+        for(int i=0;i<m;i++)
+        {
+            if(mat[i][col]>max)
+            {
+                max=mat[i][col];
+                index=i;
+            }
+        }
+        return index;
+    }
+}
+
+
+Applications
+
+1)410. Split Array Largest Sum
+
+class Solution {
+    public int splitArray(int[] nums, int k) {
+        int start=0,stop=0;
+        for(int i=0;i<nums.length;i++)
+        {
+            stop+=nums[i];
+            if(nums[i]>start) //start=max element,stop=sum of array
+            start=nums[i];
+        }
+        while(start<=stop)
+        {
+            int mid=start+(stop-start)/2;
+            int stud=countstud(nums,mid);
+            if(stud>k)
+            start=mid+1;  // for k=5,4,3,2,1
+            else          //max element to sum of array range respectively
+            stop=mid-1;
+        }
+        return start;
+
+    }
+    static int countstud(int[] nums,int mid)
+    {
+         int stud=1,sum=0;
+         for(int i=0;i<nums.length;i++)
+         {
+            if(sum+nums[i]<=mid)
+            {
+                sum+=nums[i];
+
+            }
+            else
+            {
+                stud++;
+                sum=nums[i];
+            }
+         }
+         return stud;
+    }
+}
+
+this is the code for: painters parttion, book allocation,1011. Capacity To Ship Packages Within D Days -largest sum is calculated
+
+2)aggressive cows-1552. Magnetic Force Between Two Balls- largest distance(difference) is calculated
+
+
+class Solution {
+    public int maxDistance(int[] position, int m) {
+        Arrays.sort(position);
+        int start=1,stop=position[position.length-1]-position[0];
+        while(start<=stop)
+        {
+            int mid=start+(stop-start)/2; //mid is the distance
+            int cows=countcows(position,mid);
+            if(cows>=m)
+            start=mid+1;
+            else
+            stop=mid-1;
+        }
+        return stop;
+    }
+    static int countcows(int[] position,int mid)
+    {
+        int cows=1,last=position[0];
+        for(int i=0;i<position.length;i++)
+        {
+            if(position[i]-last>=mid)
+            {
+              cows++;
+              last=position[i];
+            }
+        }
+        return cows;
+    }
+}
+
+3)1482. Minimum Number of Days to Make m Bouquets
+
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        int start=0,stop=0;
+        int nums[]=bloomDay;
+        for(int i=0;i<nums.length;i++)
+        {
+            if(nums[i]<start)
+            start=nums[i];
+            if(nums[i]>stop) 
+            stop=nums[i];
+        }
+        int max=stop;
+        while(start<=stop)
+        {
+            int mid=start+(stop-start)/2;// mid is the day number
+            if(possible(nums,mid,m,k))
+            stop=mid-1;
+            else
+            start=mid+1;
+        }
+        if(start>max)
+        return -1;
+        return start;
+
+    }
+    static boolean possible(int[] nums,int mid,int m,int k)
+    {
+         int count=0,nob=0;
+         for(int i=0;i<nums.length;i++)
+         {
+            if(nums[i]<=mid)
+            {
+               count++;
+
+            }
+            else
+            {
+                nob+=count/k;
+                count=0;
+                
+            }
+         }
+         nob+=count/k;
+         return nob>=m;
+    }
+}
+
+4) Find the Smallest Divisor Given a Threshold (here both the soln are same )
+
+soln 1: 1283. Find the Smallest Divisor Given a Threshold
+
+
+class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        // similar to split array largest sum
+        int[] piles=nums;
+    int start=1,stop=0;
+    for(int i=0;i<piles.length;i++)
+    {
+        if(stop<piles[i])
+        stop=piles[i];
+    }
+    while(start<=stop)
+    {
+    int mid=start+(stop-start)/2;//mid is the possible set of divisors
+    int totalh=calculate(piles,mid);
+    if(totalh>threshold)
+    start=mid+1;
+    else
+    stop=mid-1;
+    }
+    return start;
+    }
+    static int calculate(int[] piles,int mid)
+    {
+        int total=0;
+        for(int i=0;i<piles.length;i++)
+        {
+            total+=Math.ceil((double)piles[i]/(double)mid); //double type is important
+        }
+        return total;
+
+    }
+}
+
+soln 2: 875. Koko Eating Bananas
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+    // similar to split array largest sum
+    int start=1,stop=0;
+    for(int i=0;i<piles.length;i++)
+    {
+        if(stop<piles[i])
+        stop=piles[i];
+    }
+    while(start<=stop)
+    {
+    int mid=start+(stop-start)/2;//mid is the possible set of hpurs
+    int totalh=calculate(piles,mid);
+    if(totalh>h)
+    start=mid+1;
+    else
+    stop=mid-1;
+    }
+    return start;
+    }
+    static int calculate(int[] piles,int mid)
+    {
+        int totalh=0;
+        for(int i=0;i<piles.length;i++)
+        {
+            totalh+=Math.ceil((double)piles[i]/(double)mid); //double type is important
+        }
+        return totalh;
+    }
+}
+
+
+Additional
+
+1)ugly number
+
+soln 1: 263. Ugly Number
+
+class Solution {
+    public boolean isUgly(int n) {
+     if(n<=0)
+     return false;
+       int arr[]={2,3,5};
+       for(int i=0;i<arr.length;i++)
+       {
+        while(n%arr[i]==0)
+        n=n/arr[i];
+
+       }
+       return n==1;
+    
+    }
+}
+
+
+
+
+
+soln 2:264. Ugly Number II-dynamic approach
+
+class Solution {
+    public int nthUglyNumber(int n) {
+        int arr[]=new int[n];
+        arr[0]=1;
+        int p1=0,p2=0,p3=0;//pointers
+        for(int i=1;i<n;i++)
+        {
+            int mul2=arr[p1]*2;
+            int mul3=arr[p2]*3;
+            int mul5=arr[p3]*5;
+            arr[i]=Math.min(mul2,Math.min(mul3,mul5));
+            if(arr[i]==mul2)p1++;
+            if(arr[i]==mul3)p2++;
+            if(arr[i]==mul5)p3++;
+        }
+        return arr[n-1];
+    }
+}
+
+
+2)668. Kth Smallest Number in Multiplication Table
+
+class Solution {
+    public int findKthNumber(int m, int n, int k) {
+       int start=1,stop=m*n;
+       while(start<=stop)
+       {
+        int mid=start+(stop-start)/2; // mid is the range of elements in the matrix
+        int count=countsmallerelementsofmid(mid,m,n);
+        if(count<k)
+        start=mid+1;
+        else
+        stop=mid-1;
+       }
+       return start;
+    }
+    static int countsmallerelementsofmid(int mid,int m,int n)
+    {
+        int i=0,count=0;
+      for(int j=1;j<=m;j++)
+      {
+        count+=Math.min(mid/j,n);//count the number of elements less than mid on each row
+      }                           // if number is greater than mid count+=0
+                                  //else count+=mid/j mostly
+      return count;
+    }
+}
+
+3)719. Find K-th Smallest Pair Distance
+
+class Solution {
+    public int smallestDistancePair(int[] nums, int k) {
+          Arrays.sort(nums);
+          int start=0,stop=nums[nums.length-1]-nums[0];
+          while(start<=stop)
+          {
+            int mid=start+(stop-start)/2;// set of all differnces of all possible pairs
+            int count=countpairs(nums,mid);
+            if(count<k)
+            start=mid+1;
+            else
+            stop=mid-1;
+          }
+          return start;
+    }
+    static int countpairs(int[] nums,int mid)
+    {
+        int count=0,i=0;
+        for(int j=1;j<nums.length;j++)
+        {
+            while(nums[j]-nums[i]>mid)// two pointer to calculate differnce
+            i++;                  
+            count+=j-i;               // if two pointers i and j are at same element count+=0
+        }
+        return count;
+    }
+}
