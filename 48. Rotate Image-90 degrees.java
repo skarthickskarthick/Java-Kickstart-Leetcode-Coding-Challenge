@@ -9,7 +9,20 @@ class Solution {
                 matrix[j][i]=temp;
                
             }
-        }         //[[1,2,3],[4,5,6],[7,8,9]]-matrix
-                  // transpose- [[1,4,7],[2,5,8],[3,6,9]]
+        }                      //Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+                               //Output: [[7,4,1],[8,5,2],[9,6,3]]
+
+      
+                int start=0,stop=matrix[0].length-1;
+                while(start<stop){
+                    for(int i=0;i<matrix.length;i++)
+                    {
+                int temp=matrix[i][start];
+                matrix[i][start]=matrix[i][stop];
+                matrix[i][stop]=temp;
+                    }
+                start++;
+                stop--;
+                }
     }
 }
