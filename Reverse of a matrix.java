@@ -1,15 +1,27 @@
-class Solution {
-    public void rotate(int[][] matrix) {
-         for(int i=0;i<matrix.length;i++)
-        {
-            for(int j=i+1;j<matrix[0].length;j++)
-            {
-                int temp=matrix[i][j];
-                matrix[i][j]=matrix[j][i];
-                matrix[j][i]=temp;
-               
-            }
-        }         //[[1,2,3],[4,5,6],[7,8,9]]-matrix
-                  // transpose- [[1,4,7],[2,5,8],[3,6,9]]
-    }
-}
+soln 1: along rows
+
+ int start=0,stop=matrix.length-1;
+                while(start<stop){
+                int temp[]=matrix[start];
+                matrix[start]=matrix[stop];
+                matrix[stop]=temp;
+                start++;
+                stop--;
+                }
+
+
+soln 2: along columns
+
+ int start=0,stop=matrix[0].length-1;
+                while(start<stop){
+                    for(int i=0;i<matrix.length;i++)
+                    {
+                int temp=matrix[i][start];
+                matrix[i][start]=matrix[i][stop];
+                matrix[i][stop]=temp;
+                    }
+                start++;
+                stop--;
+                }
+
+
