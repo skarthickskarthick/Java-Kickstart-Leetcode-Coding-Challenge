@@ -1,0 +1,85 @@
+Hashmaps
+1)Two sum
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> m=new HashMap<>();
+        int[] arr=new int[2];
+        int a1=0,a2=0;
+        for(int i=0;i<nums.length;i++)
+        {
+            m.put(nums[i],i);
+        }
+        for(int i=0;i<nums.length;i++)
+        {
+            int n=target-nums[i];
+            if(m.containsKey(n)&&m.get(n)!=i){
+            a2=m.get(n);
+            a1=i;
+            break;}
+        }
+        arr[0]=a1;
+        arr[1]=a2;
+        return arr;
+    }
+}
+2)Duplicates in array
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        HashMap<Integer,Integer> m=new HashMap<>();
+        List<Integer> list=new ArrayList<>();
+
+        for(int i=0;i<nums.length;i++)
+        {
+            if(!m.containsKey(nums[i]))
+            m.put(nums[i],1);
+            else
+            m.put(nums[i],m.get(nums[i])+1);
+        }
+        for(Integer e:m.keySet())
+        {
+            if(m.get(e)>1)
+            list.add(e);
+        }
+        return list;
+    }
+}
+3)Find the difference
+class Solution {
+    public char findTheDifference(String s, String t) {
+        HashMap<Character,Integer> m=new HashMap<>();
+         for(char c:s.toCharArray())
+         {
+            m.put(c,m.getOrDefault(c,0)+1);
+         }
+         for(char c:t.toCharArray())
+         {
+            if(!m.containsKey(c)||m.get(c)==0)
+            return c;
+            else
+            m.put(c,m.get(c)-1);
+         }
+        return ' ';
+
+    }
+}
+4)check if all integers in ranges are covered
+class Solution {
+    public boolean isCovered(int[][] ranges, int left, int right) {
+        HashMap<Integer,Integer> m=new HashMap<>();
+        for(int i=left;i<=right;i++)
+        {
+            m.put(i,m.getOrDefault(i,0)+1);
+        }
+        for(int i=0;i<ranges.length;i++)
+        {
+            for(int j=ranges[i][0];j<=ranges[i][1];j++)
+            {
+               if(m.containsKey(j))
+               m.remove(j);
+            }
+        }
+        if(m.size()>0)
+        return false;
+        return true;
+}
+}
